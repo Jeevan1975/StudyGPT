@@ -9,15 +9,15 @@ from uuid import uuid4
 
 load_dotenv()
 
-embeddings = GoogleGenerativeAIEmbeddings(model='gemini-embedding-001')
+embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-PERSIST_DIR = BASE_DIR / "vectorstore"
-DOCUMENTS_DIR = BASE_DIR / "data" / "documents"
+PERSIST_DIR = str(BASE_DIR / "vectorstore")
+DOCUMENTS_DIR = str(BASE_DIR / "data" / "documents")
 
 # Ensure whether directories exist or not
-PERSIST_DIR.mkdir(parents=True, exist_ok=True)
-DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
+Path(PERSIST_DIR).mkdir(parents=True, exist_ok=True)
+Path(DOCUMENTS_DIR).mkdir(parents=True, exist_ok=True)
 
 
 def ingest_documents(file_path: Path):
@@ -48,5 +48,5 @@ def ingest_documents(file_path: Path):
     
     
 if __name__=="__main__":
-    for file in DOCUMENTS_DIR.glob("*.pdf"):
+    for file in Path(DOCUMENTS_DIR).glob("*.pdf"):
         ingest_documents(file)
