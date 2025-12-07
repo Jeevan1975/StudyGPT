@@ -3,7 +3,7 @@ from typing import Optional
 from ..database.supabase_client import supabase
 
 
-async def get_current_user(authorization: Optional[str] = Header(None)):
+async def get_current_user(authorization: Optional[str] = Header(None, alias="Authorization")):
     """
     Validates the 'Authorization: Bearer <token>' header using supabase
     """
@@ -21,7 +21,7 @@ async def get_current_user(authorization: Optional[str] = Header(None)):
         raise HTTPException(status_code=401, detail="Access token missing.")
     
     try:
-        result = supabase.auth.get_user(token)
+        result = supabase.auth.get_user(jwt=token)
         user = None
         
         if hasattr(result, "user") and result.user:

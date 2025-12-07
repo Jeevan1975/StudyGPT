@@ -10,7 +10,7 @@ Base = declarative_base()
 class Book(Base):
     __tablename__="books"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, defaul=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(String, nullable=False)
     title = Column(String, nullable=False)
     file_name = Column(String, nullable=False)
