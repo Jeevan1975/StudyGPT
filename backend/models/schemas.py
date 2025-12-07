@@ -9,7 +9,6 @@ class ChatResponse(BaseModel):
     answer: str
     
 
-
 class SignupRequest(BaseModel):
     email: EmailStr
     password: str
