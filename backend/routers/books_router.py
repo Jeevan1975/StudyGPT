@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile, BackgroundTasks, Depends
+from fastapi import APIRouter, File, UploadFile, BackgroundTasks, Depends, Header
 from ..services.storage import upload_book_to_supabase
 from ..core.auth import get_current_user
 from ..core.ingest import ingest_books
@@ -25,10 +25,12 @@ async def upload_book(
     BASE_DIR = Path(__file__).resolve().parent.parent
     VECTORSTORE_BASE = BASE_DIR / "vectorstores"
     
-    user_id = user.id if hasattr(user, "id") else user.get("id")
+    user_id = user["id"]
     book_id = str(uuid.uuid4())
     
-    storage_path = await upload_book_to_supabase(file, user_id, book_id)
+    user_access_token = user["access_token"]
+    
+    storage_path = await upload_book_to_supabase(file, user_id, book_id, user_access_token)
     
     vectorstore_path = str(VECTORSTORE_BASE / user_id / book_id)
     

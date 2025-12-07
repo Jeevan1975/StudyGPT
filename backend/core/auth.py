@@ -33,7 +33,10 @@ async def get_current_user(authorization: Optional[str] = Header(None, alias="Au
         if not user:
             raise HTTPException(status_code=401, detail="Invalid or expired token")
         
-        return user
+        return {
+            "id": user.id,
+            "access_token": token
+        }
     
     except Exception:
         raise HTTPException(
