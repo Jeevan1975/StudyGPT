@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Book</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Upload Book</h1>
+
+        <!-- Upload Form -->
+        <form id="uploadForm" class="space-y-4">
+            <!-- File Input -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Choose a PDF</label>
+                <input type="file" id="fileInput" accept="application/pdf"
+                    class="border border-gray-300 p-3 rounded-lg w-full" required />
+            </div>
+
+            <!-- Token Input -->
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Authorization Token</label>
+                <input type="text" id="tokenInput" placeholder="Bearer eyJhbGciOiJI..."
+                    class="border border-gray-300 p-3 rounded-lg w-full" required />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Upload Book
+            </button>
+        </form>
+
+        <!-- Result Message -->
+        <div id="result" class="mt-6 text-center text-sm font-medium"></div>
+    </div>
+
+
+    <!-- JS Logic -->
+    <script>
+        const uploadForm = document.getElementById("uploadForm");
+        const resultBox = document.getElementById("result");
+
+        uploadForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const file = document.getElementById("fileInput").files[0];
+            const token = document.getElementById("tokenInput").value.trim();
+
+            if (!file) {
+                resultBox.innerHTML = `<p class="text-red-600">Please select a PDF.</p>`;
+                return;
+            }
+
+            if (!token.startsWith("Bearer ")) {
+                resultBox.innerHTML = `<p class="text-red-600">Token must start with "Bearer "</p>`;
+                return;
+            }
+
+            // Prepare multipart form data
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                resultBox.innerHTML = `<p class="text-blue-600">Uploading...</p>`;
+
+                const response = await fetch("http://127.0.0.1:8000/books/upload", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": token
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultBox.innerHTML = `<p class="text-red-600">❌ Error: ${data.detail || "Upload failed"}</p>`;
+                } else {
+                    resultBox.innerHTML = `
+            <p class="text-green-600">✅ Upload successful!</p>
+            <p class="text-gray-700 mt-2">Book ID: <span class="font-semibold">${data.book_id}</span></p>
+          `;
+                }
+
+            } catch (error) {
+                resultBox.innerHTML = `<p class="text-red-600">❌ Network error</p>`;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

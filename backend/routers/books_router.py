@@ -58,3 +58,22 @@ async def upload_book(
         "message": "Book uploaded to Supabase. Ingestion started.",
         "book_id": book_id
     }
+    
+    
+    
+    
+@router.post("/test-header")
+async def check_header(
+    background_tasks: BackgroundTasks,
+    user = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    return {"user": user}
+
+
+
+@router.post("/test-upload")
+async def upload_book(
+    file: UploadFile = File(...)
+):
+    return {"message": "file uploaded successfully"}
