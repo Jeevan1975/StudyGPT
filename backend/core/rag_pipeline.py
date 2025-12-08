@@ -19,7 +19,10 @@ embeddings = GoogleGenerativeAIEmbeddings(
 )
 
 
-async def run_rag_stream(vectorstore_path: str, question: str):
+async def run_rag_stream(question: str, vectorstore_path: str):
+
+    print("vectorstore path:, ",vectorstore_path)
+    print("Vectorstore type: ", type(vectorstore_path))
     
     vector_store = Chroma(
         embedding_function=embeddings,

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from ..database.connection import get_db
 from ..database.db_models import Book
 from ..core.auth import get_current_user
-from ..models.schemas import ChatRequest, ChatResponse
+from ..models.schemas import ChatRequest
 from ..core.rag_pipeline import run_rag_stream
 
 
