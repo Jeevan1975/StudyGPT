@@ -11,7 +11,9 @@ from pathlib import Path
 from uuid import uuid4
 import tempfile
 import os
-import datetime
+from datetime import datetime
+import unicodedata
+import re
 
 
 load_dotenv()
@@ -20,6 +22,19 @@ embeddings = GoogleGenerativeAIEmbeddings(
     model="models/text-embedding-004",
     google_api_key=os.getenv("GOOGLE_API_KEY")
 )
+
+
+def clean_text(text: str) -> str:
+    # Remove surrogate characters
+    text = text.encode("utf-8", "ignore").decode("utf-8", "ignore")
+
+    # Normalize unicode
+    text = unicodedata.normalize("NFKD", text)
+
+    # Optional: remove non-BMP characters (math fonts, emoji)
+    text = re.sub(r"[\U00010000-\U0010FFFF]", "", text)
+
+    return text
 
 
 def download_book_from_supabase(storage_path: str):
@@ -54,6 +69,10 @@ def ingest_books(book_id: str, storage_path: str, vectorstore_path: str):
         # Load pdf
         loader = PyPDFLoader(tmp_pdf_path)
         docs = loader.load()
+        
+        # Clean text in all documents before splitting
+        for doc in docs:
+            doc.page_content = clean_text(doc.page_content)
         
         # Splitting
         splitter = RecursiveCharacterTextSplitter(

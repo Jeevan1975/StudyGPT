@@ -12,7 +12,7 @@ import os
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-PERSIST_DIR = str(BASE_DIR / "vectorstore")
+PERSIST_DIR = str(BASE_DIR / "vectorstores")
 
 # Load vector store
 embeddings = GoogleGenerativeAIEmbeddings(
@@ -53,9 +53,3 @@ async def run_rag_stream(query: str):
 
 # def run_rag(query: str):
 #     return rag_chain.invoke({"question": query})
-
-
-if __name__=="__main__":
-    query = "How to upgrade ram in my asus strix laptop?"
-    result = run_rag(query=query)
-    print(result)
