@@ -1,5 +1,6 @@
 from supabase import create_client
 from ..config import settings
+from ..database.supabase_client import supabase
 import uuid
 import httpx
 
@@ -40,3 +41,11 @@ async def upload_book_to_supabase(file, user_id: str, book_id: str, user_access_
     except Exception as e:
         print("Upload error -> ", e)
         raise e
+    
+    
+
+async def delete_book_from_supabase(storage_path: str):
+    try:
+        supabase.storage.from_("books").remove([storage_path])
+    except Exception as e:
+        print("Supabase deletion error:", e)

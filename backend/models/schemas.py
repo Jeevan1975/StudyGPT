@@ -1,4 +1,7 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
+from uuid import UUID
+from typing import Optional
+from datetime import datetime
 
 
 class ChatRequest(BaseModel):
@@ -17,3 +20,16 @@ class SignupRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+    
+    
+    
+class BookResponse(BaseModel):
+    id: UUID
+    title: str
+    status: str
+    file_name: str
+    storage_path: str
+    uploaded_at: datetime
+    ingested_at: Optional[datetime] = None
+    
+    model_config = ConfigDict(from_attributes=True)
