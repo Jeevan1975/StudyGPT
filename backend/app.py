@@ -1,8 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import chat_router, auth_router, books_router
+from pathlib import Path
 
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,6 +20,5 @@ app.include_router(auth_router.router, prefix="/auth", tags=["auth"])
 app.include_router(chat_router.router, prefix="/chat", tags=["chat"])
 
 @app.get("/health")
-def check_health():
+async def check_health():
     return {"status": "ok"}
-
