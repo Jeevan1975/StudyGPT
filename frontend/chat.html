@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - StudyGPT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hidden {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-white font-sans antialiased text-slate-900 h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- Mobile Header -->
+    <header
+        class="md:hidden flex-shrink-0 h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 z-20">
+        <div class="flex items-center gap-2">
+            <button class="p-2 -ml-2 text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <span class="font-bold text-slate-800 truncate">Deep Learning</span>
+        </div>
+        <button class="p-2 text-slate-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Sidebar (History) -->
+    <aside class="w-64 bg-slate-50 border-r border-slate-200 hidden md:flex flex-col flex-shrink-0">
+        <div class="h-16 flex items-center px-4 border-b border-slate-200 flex-shrink-0">
+            <a href="book-detail.html"
+                class="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span class="text-sm font-medium">Back to Book</span>
+            </a>
+        </div>
+
+        <div class="p-4 flex-1 overflow-y-auto scrollbar-hidden">
+            <button
+                class="w-full flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg shadow-sm text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors mb-6">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                New Chat
+            </button>
+
+            <h3 class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Today</h3>
+            <ul class="space-y-1 mb-6">
+                <li>
+                    <a href="#"
+                        class="block px-3 py-2 rounded-lg bg-white border border-slate-200 shadow-sm text-sm text-slate-800 font-medium truncate">
+                        Explain Backpropagation
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors truncate">
+                        Chapter 4 Summary
+                    </a>
+                </li>
+            </ul>
+
+            <h3 class="px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Previous 7 Days</h3>
+            <ul class="space-y-1">
+                <li>
+                    <a href="#"
+                        class="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors truncate">
+                        Activation Functions
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="block px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100 transition-colors truncate">
+                        Gradient Descent Types
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="p-4 border-t border-slate-200">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500 text-xs">
+                    JD</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-slate-900 truncate">John Doe</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="flex-1 flex flex-col min-w-0 bg-white">
+        <!-- Messages -->
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 space-y-6">
+
+            <!-- AI Message (Welcome) -->
+            <div class="flex gap-4 max-w-3xl mx-auto">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex-shrink-0 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                    AI</div>
+                <div class="space-y-1">
+                    <p class="text-sm font-medium text-slate-900">StudyGPT <span
+                            class="text-slate-400 font-normal ml-2">10:23 AM</span></p>
+                    <div class="text-slate-700 leading-relaxed">
+                        Hello! I'm ready to help you study "Deep Learning" by Ian Goodfellow. Accessing 800 pages of
+                        content.<br><br>
+                        Ask me to:
+                        <ul class="list-disc pl-5 mt-2 space-y-1">
+                            <li>Summarize specific chapters</li>
+                            <li>Explain complex mathematical concepts</li>
+                            <li>Generate quiz questions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Message -->
+            <div class="flex flex-row-reverse gap-4 max-w-3xl mx-auto">
+                <div
+                    class="w-8 h-8 rounded-full bg-slate-200 flex-shrink-0 flex items-center justify-center text-slate-500 text-xs font-bold">
+                    JD</div>
+                <div class="space-y-1 text-right">
+                    <p class="text-sm font-medium text-slate-900">You <span
+                            class="text-slate-400 font-normal mr-2">10:24 AM</span></p>
+                    <div
+                        class="bg-primary-600 text-white px-5 py-3 rounded-2xl rounded-tr-sm text-left shadow-sm inline-block">
+                        <p>Can you explain the concept of backpropagation simply?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Message -->
+            <div class="flex gap-4 max-w-3xl mx-auto">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex-shrink-0 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                    AI</div>
+                <div class="space-y-1">
+                    <p class="text-sm font-medium text-slate-900">StudyGPT <span
+                            class="text-slate-400 font-normal ml-2">10:24 AM</span></p>
+                    <div
+                        class="text-slate-700 leading-relaxed bg-slate-50 p-6 rounded-2xl rounded-tl-sm border border-slate-100">
+                        <p class="mb-4">Certainly. Think of backpropagation as a way for the network to learn from its
+                            mistakes.</p>
+
+                        <h4 class="font-bold text-slate-900 mb-2">The Analogy:</h4>
+                        <p class="mb-4">Imagine you are practising shooting a basketball. You take a shot and miss to
+                            the right. Your brain (the optimizer) realizes the error (loss) and tells your muscles to
+                            adjust slightly to the left for the next shot. You repeat this until you make the basket.
+                        </p>
+
+                        <h4 class="font-bold text-slate-900 mb-2">In the Neural Network:</h4>
+                        <ol class="list-decimal pl-5 space-y-2 mb-4">
+                            <li><strong>Forward Pass:</strong> The network makes a prediction (the shot).</li>
+                            <li><strong>Loss Calculation:</strong> It calculates how far off the prediction was from the
+                                truth (the miss).</li>
+                            <li><strong>Backward Pass:</strong> It calculates the gradient (the adjustment needed) for
+                                every weight in the network, moving backward from the output to the input.</li>
+                            <li><strong>Update:</strong> The weights are updated to reduce the error.</li>
+                        </ol>
+
+                        <div class="text-xs text-slate-400 mt-4 border-t border-slate-200 pt-2 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                            Sources: Chapter 6.5, Page 200-204
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spacer for bottom input -->
+            <div class="h-24"></div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="flex-shrink-0 border-t border-slate-200 p-4 bg-white">
+            <div class="max-w-3xl mx-auto relative">
+                <form
+                    class="flex items-end gap-2 bg-white border border-slate-300 rounded-xl p-2 shadow-sm focus-within:ring-2 focus-within:ring-primary-600 focus-within:border-transparent transition-all">
+                    <button type="button"
+                        class="p-2 text-slate-400 hover:text-slate-600 transition-colors rounded-lg hover:bg-slate-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
+                            </path>
+                        </svg>
+                    </button>
+                    <textarea rows="1"
+                        class="flex-1 w-full border-0 bg-transparent py-2 px-0 text-slate-900 placeholder-slate-500 focus:ring-0 sm:text-sm resize-none"
+                        placeholder="Ask a follow-up question..."
+                        style="min-height: 24px; max-height: 150px;"></textarea>
+                    <button type="submit"
+                        class="p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9-2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </form>
+                <div class="text-center mt-2">
+                    <p class="text-xs text-slate-400">AI can make mistakes. Please verify important information.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
