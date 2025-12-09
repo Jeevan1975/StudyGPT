@@ -2,15 +2,6 @@
 
 An AI-powered learning platform where users upload books (PDFs), and the system uses Retrieval-Augmented Generation (RAG) to answer questions based solely on the uploaded book. Users can chat with the book, ask questions, and receive real-time streaming responses.
 
-## Tech Stack
-
-- **FastAPI** - Backend API
-- **SQLAlchemy** - Database models
-- **Supabase Auth** - User authentication
-- **Supabase Storage** - Store uploaded books
-- **LangChain** - RAG pipeline
-- **ChromaDB** - Per-book vector storage
-- **Background ingestion** - PDF → embeddings → Chroma
 
 ## ✨ Features
 
