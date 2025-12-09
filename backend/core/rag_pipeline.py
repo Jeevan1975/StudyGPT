@@ -1,6 +1,6 @@
 from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+from langchain_core.runnables import RunnableLambda
 from langchain_chroma import Chroma
 from ..models.prompts import chat_prompt
 from ..models.llm import get_llm
@@ -20,10 +20,6 @@ embeddings = GoogleGenerativeAIEmbeddings(
 
 
 async def run_rag_stream(question: str, vectorstore_path: str):
-
-    print("vectorstore path:, ",vectorstore_path)
-    print("Vectorstore type: ", type(vectorstore_path))
-    
     vector_store = Chroma(
         embedding_function=embeddings,
         persist_directory=vectorstore_path
